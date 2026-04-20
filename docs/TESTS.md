@@ -24,6 +24,8 @@ Manual test checklist to run before publishing. Requires a Rust server with the 
 - [ ] **T9: Search bar persists after Enter** — Type "gas" → Enter. Search bar remains visible with "gas" in the input.
 - [ ] **T10: Clear button** — Click ✕. Filter is cleared, default directory is restored, input is empty, placeholder reappears.
 - [ ] **T11: Disappears on close** — Close the phone. Search bar is gone.
+- [ ] **T11a: Pagination works after clear** — Requires >12 named phones in the world. Search "gas" → Enter → click ✕ to clear. Directory page-forward/back buttons remain functional and navigate through pages of the unfiltered directory.
+- [ ] **T11b: Pagination works after empty submit** — Type "gas" → Enter → backspace the input until empty → Enter. Same expected behavior as T11a (page nav works).
 
 ## Phone Calls
 

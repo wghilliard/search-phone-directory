@@ -5,8 +5,8 @@ This document captures the safety checks, engine-specific concerns, and edge cas
 ## Memory Safety
 
 ### ProtoBuf Pooling
-- [ ] `Pool.Get<PhoneDirectory>()` and `Pool.Get<List<DirectoryEntry>>()` are always disposed via `try/finally`
-- [ ] `Pool.Get<DirectoryEntry>()` entries are owned by the directory and disposed when it is
+- [ ] `Pool.Get<PhoneDirectory>()` is always disposed via `try/finally`
+- [ ] `directory.entries` (allocated via `Pool.Get<List<DirectoryEntry>>()`) and individual `DirectoryEntry` objects are released automatically by `PhoneDirectory.Dispose()` → `ResetToPool()`
 - [ ] No `new PhoneDirectory()` or `new DirectoryEntry()` — always use the pool
 - [ ] `directory.Dispose()` is called even if `ClientRPC` throws
 

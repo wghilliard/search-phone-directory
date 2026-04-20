@@ -80,6 +80,10 @@ namespace Oxide.Plugins
             {
                 SendFilteredDirectory(player, activePhone, savedText);
             }
+            else
+            {
+                SendVanillaDirectory(player, activePhone);
+            }
         }
 
         private void OnPlayerDisconnected(BasePlayer player, string reason)
@@ -149,13 +153,14 @@ namespace Oxide.Plugins
             if (string.IsNullOrEmpty(searchText))
             {
                 _activeSearchText.Remove(player.userID);
+                SendVanillaDirectory(player, phone);
             }
             else
             {
                 _activeSearchText[player.userID] = searchText;
+                SendFilteredDirectory(player, phone, searchText);
             }
 
-            SendFilteredDirectory(player, phone, searchText);
             ShowSearchBar(player, searchText);
         }
 
@@ -185,8 +190,15 @@ namespace Oxide.Plugins
             }
 
             _activeSearchText.Remove(player.userID);
-            SendFilteredDirectory(player, phone, "");
+            SendVanillaDirectory(player, phone);
             ShowSearchBar(player);
+        }
+
+        private static void SendVanillaDirectory(BasePlayer player, PhoneController phone, int page = 0)
+        {
+            using PhoneDirectory directory = Pool.Get<PhoneDirectory>();
+            TelephoneManager.GetPhoneDirectory(phone.PhoneNumber, page, DirectoryPageSize, directory);
+            phone.ParentEntity.ClientRPC(RpcTarget.Player("ReceivePhoneDirectory", player), directory);
         }
 
         private bool CheckCooldown(BasePlayer player)
@@ -227,65 +239,59 @@ namespace Oxide.Plugins
 
         private static void SendFilteredDirectory(BasePlayer player, PhoneController phone, string searchText)
         {
-            PhoneDirectory directory = Pool.Get<PhoneDirectory>();
+            using PhoneDirectory directory = Pool.Get<PhoneDirectory>();
             directory.entries = Pool.Get<List<PhoneDirectory.DirectoryEntry>>();
-            try
+
+            foreach (KeyValuePair<int, PhoneController> kvp in TelephoneManager.allTelephones)
             {
-                foreach (KeyValuePair<int, PhoneController> kvp in TelephoneManager.allTelephones)
+                if (kvp.Key == phone.PhoneNumber)
                 {
-                    if (kvp.Key == phone.PhoneNumber)
-                    {
-                        continue;
-                    }
-
-                    PhoneController otherPhone = kvp.Value;
-                    if (otherPhone == null)
-                    {
-                        continue;
-                    }
-
-                    if (otherPhone.ParentEntity == null || otherPhone.ParentEntity.IsDestroyed)
-                    {
-                        continue;
-                    }
-
-                    string directoryName = otherPhone.GetDirectoryName();
-                    if (string.IsNullOrEmpty(directoryName))
-                    {
-                        continue;
-                    }
-
-                    if (!string.IsNullOrEmpty(searchText) &&
-                        directoryName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) < 0)
-                    {
-                        continue;
-                    }
-
-                    PhoneDirectory.DirectoryEntry entry = Pool.Get<PhoneDirectory.DirectoryEntry>();
-                    entry.phoneName = directoryName;
-                    entry.phoneNumber = otherPhone.PhoneNumber;
-                    directory.entries.Add(entry);
+                    continue;
                 }
 
-                directory.entries.Sort((a, b) =>
-                    string.Compare(a.phoneName, b.phoneName, StringComparison.OrdinalIgnoreCase));
-
-                // Dispose excess entries beyond page size and trim the list
-                while (directory.entries.Count > DirectoryPageSize)
+                PhoneController otherPhone = kvp.Value;
+                if (otherPhone == null)
                 {
-                    PhoneDirectory.DirectoryEntry last = directory.entries[directory.entries.Count - 1];
-                    directory.entries.RemoveAt(directory.entries.Count - 1);
-                    last.Dispose();
+                    continue;
                 }
 
-                directory.atEnd = true;
+                if (otherPhone.ParentEntity == null || otherPhone.ParentEntity.IsDestroyed)
+                {
+                    continue;
+                }
 
-                phone.ParentEntity.ClientRPC(RpcTarget.Player("ReceivePhoneDirectory", player), directory);
+                string directoryName = otherPhone.GetDirectoryName();
+                if (string.IsNullOrEmpty(directoryName))
+                {
+                    continue;
+                }
+
+                if (!string.IsNullOrEmpty(searchText) &&
+                    directoryName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    continue;
+                }
+
+                PhoneDirectory.DirectoryEntry entry = Pool.Get<PhoneDirectory.DirectoryEntry>();
+                entry.phoneName = directoryName;
+                entry.phoneNumber = otherPhone.PhoneNumber;
+                directory.entries.Add(entry);
             }
-            finally
+
+            directory.entries.Sort((a, b) =>
+                string.Compare(a.phoneName, b.phoneName, StringComparison.OrdinalIgnoreCase));
+
+            // Dispose excess entries beyond page size and trim the list
+            while (directory.entries.Count > DirectoryPageSize)
             {
-                directory.Dispose();
+                PhoneDirectory.DirectoryEntry last = directory.entries[directory.entries.Count - 1];
+                directory.entries.RemoveAt(directory.entries.Count - 1);
+                last.Dispose();
             }
+
+            directory.atEnd = true;
+
+            phone.ParentEntity.ClientRPC(RpcTarget.Player("ReceivePhoneDirectory", player), directory);
         }
 
         #endregion

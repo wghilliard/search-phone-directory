@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-       <TargetFramework>net48</TargetFramework> 
+       <TargetFramework>net48</TargetFramework>
+       <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup>
         <OxideDir>..\..\Oxide.Rust\src\bin\Debug\net48</OxideDir>
