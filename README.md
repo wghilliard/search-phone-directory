@@ -101,7 +101,7 @@ sequenceDiagram
 
 ### 🛡️ Safety
 
-- ⏱️ **250ms cooldown** per player to prevent command spam
+- ⏱️ **50ms cooldown** per player to prevent command spam
 - 📏 **30-character input limit** matching vanilla phone name length
 - 🚫 **Null/destroyed object guards** for all Unity entities
 - ♻️ **Pooled ProtoBuf objects** with `try/finally` disposal to prevent memory leaks

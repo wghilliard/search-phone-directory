@@ -23,7 +23,7 @@ When a player picks up or opens a phone (landline or mobile), a search bar appea
 | Click ✕ button | Clears filter, restores default directory, resets input |
 | Close phone / walk away | Search bar is removed, filter state is cleared |
 | Disconnect | All state is cleaned up server-side |
-| Spam commands | 250ms per-player cooldown silently drops excess requests |
+| Spam commands | 50ms per-player cooldown silently drops excess requests |
 
 ## Limitations
 

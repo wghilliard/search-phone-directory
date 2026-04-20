@@ -32,6 +32,7 @@ Manual test checklist to run before publishing. Requires a Rust server with the 
 - [ ] **T12: Hides during call** — With search bar visible, dial a number. Search bar disappears while calling/in call.
 - [ ] **T13: Restores after hangup** — After the call ends (hangup, busy, timeout), search bar reappears.
 - [ ] **T14: Search text persists across call** — Type "gas" → Enter → dial a number → hang up. Search bar reappears with "gas" in the input and directory shows filtered results.
+- [ ] **T14a: Page state preserved across call (no search)** — Requires >12 named phones. Open phone → page forward to page 2 of the directory (no search active) → dial a number → hang up. Directory still shows page 2, not reset to page 1.
 
 ## Tab Switching
 

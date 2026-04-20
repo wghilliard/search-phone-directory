@@ -29,7 +29,7 @@ This document captures the safety checks, engine-specific concerns, and edge cas
 ## Exploit / Abuse Prevention
 
 ### Command Spam
-- [ ] 250ms per-player cooldown on `phonesearch.filter` and `phonesearch.clear`
+- [ ] 50ms per-player cooldown on `phonesearch.filter` and `phonesearch.clear`
 - [ ] Cooldown uses `Time.realtimeSinceStartup` (unaffected by server time scale)
 
 ### Input Validation

@@ -19,7 +19,7 @@ namespace Oxide.Plugins
         private const string ClearCommand = "phonesearch.clear";
         private const int DirectoryPageSize = 12;
         private const int MaxSearchLength = 30;
-        private const float CommandCooldown = 0.25f;
+        private const float CommandCooldown = 0.05f;
 
         private readonly Dictionary<ulong, PhoneController> _activePhones = new Dictionary<ulong, PhoneController>();
         private readonly Dictionary<ulong, float> _lastCommandTime = new Dictionary<ulong, float>();
@@ -80,10 +80,8 @@ namespace Oxide.Plugins
             {
                 SendFilteredDirectory(player, activePhone, savedText);
             }
-            else
-            {
-                SendVanillaDirectory(player, activePhone);
-            }
+            // If no search was active, leave the directory alone — the client preserves
+            // its own page state across calls. Re-sending would reset the user to page 1.
         }
 
         private void OnPlayerDisconnected(BasePlayer player, string reason)
