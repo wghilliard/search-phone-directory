@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+       <TargetFramework>net48</TargetFramework> 
+    </PropertyGroup>
+    <PropertyGroup>
+        <OxideDir>..\..\Oxide.Rust\src\bin\Debug\net48</OxideDir>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Oxide.Core">
+            <HintPath>$(OxideDir)\Oxide.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Oxide.CSharp">
+            <HintPath>$(OxideDir)\Oxide.CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Oxide.Rust">
+            <HintPath>$(OxideDir)\Oxide.Rust.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(OxideDir)\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(OxideDir)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(OxideDir)\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Rust.Data">
+            <HintPath>$(OxideDir)\Rust.Data.dll</HintPath>
+        </Reference>
+        <Reference Include="Oxide.Unity">
+            <HintPath>$(OxideDir)\Oxide.Unity.dll</HintPath>
+        </Reference>
+        <Reference Include="Facepunch.System">
+            <HintPath>$(OxideDir)\Facepunch.System.dll</HintPath>
+        </Reference>
+        <Reference Include="Facepunch.Network">
+            <HintPath>$(OxideDir)\Facepunch.Network.dll</HintPath>
+        </Reference>
+        <Reference Include="Facepunch.Console">
+            <HintPath>$(OxideDir)\Facepunch.Console.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>$(OxideDir)\UnityEngine.UI.dll</HintPath>
+        </Reference>
+        <Reference Include="Facepunch.UnityEngine">
+            <HintPath>$(OxideDir)\Facepunch.UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>$(OxideDir)\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+</Project>
